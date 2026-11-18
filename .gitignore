@@ -81,3 +81,9 @@ artifacts/models/*
 
 # Temporary audit and experiment scripts
 artifacts/scratch/
+# Backend generated model artifacts
+/backend/artifacts/models/*
+!/backend/artifacts/models/.gitkeep
+
+# Temporary experiment scripts
+/artifacts/scratch/
