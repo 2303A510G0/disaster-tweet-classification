@@ -1,0 +1,46 @@
+{
+  "status": "available",
+  "filename": "train.csv",
+  "total_records": 7613,
+  "valid_records": 7613,
+  "invalid_records": 0,
+  "duplicate_records": 110,
+  "columns": [
+    "id",
+    "keyword",
+    "location",
+    "text",
+    "target"
+  ],
+  "class_distribution": {
+    "disaster": 3271,
+    "non_disaster": 4342
+  },
+  "class_percentages": {
+    "disaster": 42.97,
+    "non_disaster": 57.03
+  },
+  "missing_values": {
+    "id": 0,
+    "keyword": 61,
+    "location": 2533,
+    "text": 0,
+    "target": 0
+  },
+  "sample_records": [
+    {
+      "id": "1",
+      "keyword": null,
+      "location": null,
+      "text": "Our deeds are the reason of this #earthquake May ALLAH Forgive us all",
+      "target": 1
+    },
+    {
+      "id": "4",
+      "keyword": null,
+      "location": null,
+      "text": "Forest fire near La Ronge Sask. Canada",
+      "target": 1
+    }
+  ]
+}

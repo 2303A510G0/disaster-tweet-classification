@@ -1,0 +1,8 @@
+{
+  "text": "BREAKING! Flood rescue needed NOW! https://example.com #FloodRescue @user",
+  "options": {
+    "removeStopWords": true,
+    "stemming": true
+  }
+}
+

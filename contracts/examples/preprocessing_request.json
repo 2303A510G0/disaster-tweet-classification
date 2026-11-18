@@ -1,0 +1,10 @@
+{
+  "text": "Huge wildfire reported near residential area, evacuations underway! http://example.com/fire",
+  "apply_lowercasing": true,
+  "remove_urls": true,
+  "remove_stopwords": true,
+  "preserve_negation": true,
+  "stemmer": "porter",
+  "lemmatizer": "wordnet"
+}
+

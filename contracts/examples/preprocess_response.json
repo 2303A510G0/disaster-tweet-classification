@@ -1,0 +1,42 @@
+{
+  "original_text": "BREAKING! Flood rescue needed NOW! https://example.com #FloodRescue @user",
+  "lowercase_text": "breaking! flood rescue needed now! https://example.com #floodrescue @user",
+  "url_cleaned_text": "BREAKING! Flood rescue needed NOW! #FloodRescue @user",
+  "html_cleaned_text": "BREAKING! Flood rescue needed NOW! #FloodRescue @user",
+  "mention_hashtag_text": "BREAKING! Flood rescue needed NOW! FloodRescue",
+  "cleaned_text": "breaking flood rescue needed now floodrescue",
+  "tokens": [
+    "breaking",
+    "flood",
+    "rescue",
+    "needed",
+    "now",
+    "floodrescue"
+  ],
+  "filtered_tokens": [
+    "breaking",
+    "flood",
+    "rescue",
+    "needed",
+    "floodrescue"
+  ],
+  "stemmed_tokens": [
+    "break",
+    "flood",
+    "rescu",
+    "need",
+    "floodrescu"
+  ],
+  "final_text": "break flood rescu need floodrescu",
+  "options": {
+    "lowercase": true,
+    "removeUrls": true,
+    "removeHtml": true,
+    "handleMentions": true,
+    "handleHashtags": true,
+    "removeStopWords": true,
+    "preserveNegation": true,
+    "stemming": true
+  }
+}
+

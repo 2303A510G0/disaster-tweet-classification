@@ -1,0 +1,13 @@
+{
+  "input_text": "Severe flooding shuts down major highway downtown, rescue teams deployed",
+  "model_id": "logistic_regression",
+  "predicted_label": 1,
+  "predicted_class": "Disaster",
+  "confidence": 0.9142,
+  "class_probabilities": {
+    "not_disaster": 0.0858,
+    "disaster": 0.9142
+  },
+  "extracted_features": ["flooding", "highway", "rescue", "severe"]
+}
+

@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Virtual Environments
+.env
+.venv
+venv/
+ENV/
+
+# Node & Frontend
+node_modules/
+frontend/node_modules/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+frontend/dist/
+
+# Large Model Artifacts (> 50MB)
+*.h5
+*.pt
+*.bin
+*.onnx
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+# Kaggle competition dataset - never upload
+data/raw/*.csv
+data/raw/*.zip
+
+# Generated trained model artifacts
+artifacts/models/*
+!artifacts/models/.gitkeep
+
+# Environment-specific secrets
+.env.*
+!.env.example
+# Unrelated previous project documents
+/CampusConnect_Project_Interrogation_and_Critique.md
+/CampusConnect_Project_Problem_Statement_and_Technical_Overview.md
+# Unrelated previous project documents
+/CampusConnect_Project_Interrogation_and_Critique.md
+/CampusConnect_Project_Problem_Statement_and_Technical_Overview.md
+
+# Temporary audit and experiment scripts
+artifacts/scratch/

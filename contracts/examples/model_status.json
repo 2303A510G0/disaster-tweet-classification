@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "data": {
+    "datasetAvailable": false,
+    "trainingStatus": "idle",
+    "isTraining": false,
+    "modelLoaded": false,
+    "selectedModel": null,
+    "artifactAvailable": false
+  }
+}
+

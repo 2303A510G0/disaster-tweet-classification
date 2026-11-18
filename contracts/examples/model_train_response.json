@@ -1,0 +1,38 @@
+{
+  "status": "success",
+  "message": "Model training and validation comparison completed successfully.",
+  "data": {
+    "splits": {
+      "trainSize": 5329,
+      "validationSize": 1142,
+      "testSize": 1142
+    },
+    "bestModel": {
+      "modelName": "MultinomialNaiveBayes",
+      "isBaseline": false,
+      "validationF1": 0.7476,
+      "validationAccuracy": 0.7986
+    },
+    "comparison": [
+      {
+        "modelName": "DummyClassifier (Baseline)",
+        "isBaseline": true,
+        "accuracy": 0.5703,
+        "f1": 0.0
+      },
+      {
+        "modelName": "MultinomialNaiveBayes",
+        "isBaseline": false,
+        "accuracy": 0.7986,
+        "f1": 0.7476
+      },
+      {
+        "modelName": "LogisticRegression",
+        "isBaseline": false,
+        "accuracy": 0.7855,
+        "f1": 0.7441
+      }
+    ]
+  }
+}
+

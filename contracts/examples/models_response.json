@@ -1,0 +1,55 @@
+{
+  "models": [
+    {
+      "id": "baseline_majority",
+      "name": "Majority Class Baseline",
+      "model_type": "Heuristic Baseline",
+      "feature_representation": "None (Majority voting)",
+      "is_trained": true,
+      "description": "Predicts the most frequent class (0: Not Disaster) as a minimum baseline.",
+      "hyperparameters": {
+        "strategy": "most_frequent"
+      }
+    },
+    {
+      "id": "multinomial_nb",
+      "name": "Multinomial Naive Bayes",
+      "model_type": "Probabilistic Classifier",
+      "feature_representation": "TF-IDF (1-gram + 2-gram)",
+      "is_trained": true,
+      "description": "Bayesian probability model applying Bayes theorem with conditional independence.",
+      "hyperparameters": {
+        "alpha": 0.5,
+        "fit_prior": true
+      }
+    },
+    {
+      "id": "logistic_regression",
+      "name": "Logistic Regression (MaxEnt)",
+      "model_type": "Linear Classifier",
+      "feature_representation": "TF-IDF (1-gram + 2-gram)",
+      "is_trained": true,
+      "description": "Maximum Entropy log-linear model with L2 regularization.",
+      "hyperparameters": {
+        "C": 1.0,
+        "max_iter": 1000,
+        "solver": "lbfgs",
+        "random_state": 42
+      }
+    },
+    {
+      "id": "linear_svm",
+      "name": "Linear Support Vector Classifier",
+      "model_type": "Maximum Margin Classifier",
+      "feature_representation": "TF-IDF + Chi-Square Selection",
+      "is_trained": true,
+      "description": "Linear SVM optimizing maximum margin hyperplane separation.",
+      "hyperparameters": {
+        "C": 1.0,
+        "random_state": 42
+      }
+    }
+  ],
+  "selected_default_model": "logistic_regression"
+}
+

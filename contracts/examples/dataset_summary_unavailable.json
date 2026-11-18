@@ -1,0 +1,5 @@
+{
+  "status": "unavailable",
+  "detail": "Dataset not found. Place the original Kaggle train.csv file in data/raw/train.csv."
+}
+

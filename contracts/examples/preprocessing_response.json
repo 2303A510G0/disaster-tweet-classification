@@ -1,0 +1,23 @@
+{
+  "original_text": "Huge wildfire reported near residential area, evacuations underway! http://example.com/fire",
+  "cleaned_text": "Huge wildfire reported near residential area evacuations underway",
+  "tokens": ["Huge", "wildfire", "reported", "near", "residential", "area", "evacuations", "underway"],
+  "filtered_tokens": ["huge", "wildfire", "reported", "near", "residential", "area", "evacuations", "underway"],
+  "stemmed_tokens": ["huge", "wildfir", "report", "near", "residenti", "area", "evacu", "underway"],
+  "lemmatized_tokens": ["huge", "wildfire", "report", "near", "residential", "area", "evacuation", "underway"],
+  "pos_tags": [
+    {"token": "huge", "tag": "JJ", "description": "Adjective"},
+    {"token": "wildfire", "tag": "NN", "description": "Noun, singular"},
+    {"token": "reported", "tag": "VBD", "description": "Verb, past tense"},
+    {"token": "residential", "tag": "JJ", "description": "Adjective"},
+    {"token": "area", "tag": "NN", "description": "Noun, singular"},
+    {"token": "evacuations", "tag": "NNS", "description": "Noun, plural"},
+    {"token": "underway", "tag": "RB", "description": "Adverb"}
+  ],
+  "statistics": {
+    "character_count": 92,
+    "token_count": 8,
+    "lexical_diversity": 1.0
+  }
+}
+

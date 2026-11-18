@@ -1,0 +1,63 @@
+{
+  "evaluation_timestamp": "2026-11-10T16:00:00Z",
+  "test_split_size": 1142,
+  "benchmark_results": [
+    {
+      "model_id": "baseline_majority",
+      "model_name": "Majority Class Baseline",
+      "accuracy": 0.5701,
+      "precision_macro": 0.2850,
+      "recall_macro": 0.5000,
+      "f1_macro": 0.3631,
+      "f1_weighted": 0.4139,
+      "confusion_matrix": [[651, 0], [491, 0]],
+      "classification_report": {
+        "0": {"precision": 0.5701, "recall": 1.0, "f1-score": 0.7262, "support": 651},
+        "1": {"precision": 0.0, "recall": 0.0, "f1-score": 0.0, "support": 491}
+      }
+    },
+    {
+      "model_id": "multinomial_nb",
+      "model_name": "Multinomial Naive Bayes",
+      "accuracy": 0.8012,
+      "precision_macro": 0.8035,
+      "recall_macro": 0.7922,
+      "f1_macro": 0.7967,
+      "f1_weighted": 0.8005,
+      "confusion_matrix": [[560, 91], [136, 355]],
+      "classification_report": {
+        "0": {"precision": 0.8046, "recall": 0.8602, "f1-score": 0.8315, "support": 651},
+        "1": {"precision": 0.7960, "recall": 0.7230, "f1-score": 0.7577, "support": 491}
+      }
+    },
+    {
+      "model_id": "logistic_regression",
+      "model_name": "Logistic Regression (MaxEnt)",
+      "accuracy": 0.8144,
+      "precision_macro": 0.8160,
+      "recall_macro": 0.8050,
+      "f1_macro": 0.8095,
+      "f1_weighted": 0.8135,
+      "confusion_matrix": [[572, 79], [133, 358]],
+      "classification_report": {
+        "0": {"precision": 0.8113, "recall": 0.8786, "f1-score": 0.8436, "support": 651},
+        "1": {"precision": 0.8192, "recall": 0.7291, "f1-score": 0.7715, "support": 491}
+      }
+    },
+    {
+      "model_id": "linear_svm",
+      "model_name": "Linear Support Vector Classifier",
+      "accuracy": 0.8117,
+      "precision_macro": 0.8115,
+      "recall_macro": 0.8042,
+      "f1_macro": 0.8073,
+      "f1_weighted": 0.8112,
+      "confusion_matrix": [[566, 85], [130, 361]],
+      "classification_report": {
+        "0": {"precision": 0.8132, "recall": 0.8694, "f1-score": 0.8404, "support": 651},
+        "1": {"precision": 0.8094, "recall": 0.7352, "f1-score": 0.7705, "support": 491}
+      }
+    }
+  ]
+}
+

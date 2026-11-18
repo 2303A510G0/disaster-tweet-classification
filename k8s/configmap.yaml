@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nlp-disaster-tweets-config
+  labels:
+    app.kubernetes.io/name: nlp-disaster-tweets
+    app.kubernetes.io/part-of: nlp-disaster-tweets-app
+data:
+  PORT: "5000"
+  NODE_ENV: "production"
+  CORS_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000,http://localhost:80"

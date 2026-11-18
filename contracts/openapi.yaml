@@ -1,0 +1,821 @@
+openapi: 3.0.3
+info:
+  title: Syllabus NLP Disaster Tweets API
+  description: REST API specification for Disaster Tweets NLP preprocessing, evaluation, and prediction.
+  version: 1.0.0
+
+paths:
+  /api/health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status and runtime information of the API.
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /api/dataset/summary:
+    get:
+      summary: Dataset exploratory summary
+      description: Returns row count, missing values, class distributions, and sample data.
+      operationId: getDatasetSummary
+      responses:
+        '200':
+          description: Dataset summary statistics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetSummaryResponse'
+        '503':
+          description: Dataset not yet loaded or unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/preprocess:
+    post:
+      summary: Text preprocessing pipeline
+      description: Runs real-time text cleaning, normalization, tokenization, stop-word removal with negation preservation, and Porter stemming.
+      operationId: preprocessText
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreprocessRequest'
+      responses:
+        '200':
+          description: Processed tokens and structured transformations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreprocessResponse'
+        '422':
+          description: Validation error on input text.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+  /api/preprocessing/preview:
+    post:
+      summary: Preprocessing pipeline preview
+      description: Runs real-time text cleaning, tokenization, stemming, lemmatization, and POS tagging.
+      operationId: previewPreprocessing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreprocessingRequest'
+      responses:
+        '200':
+          description: Processed tokens and linguistic breakdown.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreprocessingResponse'
+        '422':
+          description: Validation error on input text.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+  /api/models:
+    get:
+      summary: List available NLP models
+      description: Returns metadata, status, and hyperparameters for all evaluated models.
+      operationId: getModels
+      responses:
+        '200':
+          description: List of models.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelListResponse'
+
+  /api/metrics:
+    get:
+      summary: Evaluation metrics and benchmark results
+      description: Retrieves evaluation scores, per-class metrics, and confusion matrices.
+      operationId: getMetrics
+      responses:
+        '200':
+          description: Evaluation metrics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+        '503':
+          description: Metrics not yet computed or unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/predict:
+    post:
+      summary: Predict disaster classification for input text
+      description: Classifies input tweet text as disaster or not disaster using specified model.
+      operationId: predictText
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictionRequest'
+      responses:
+        '200':
+          description: Classification outcome and confidence scores.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResponse'
+        '422':
+          description: Empty or invalid input text.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '503':
+          description: Model artifact not loaded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/model/status:
+    get:
+      summary: Model subsystem status
+      description: Returns dataset availability, training status, model-loaded status, and selected model name.
+      operationId: getModelStatus
+      responses:
+        '200':
+          description: Current model status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      datasetAvailable:
+                        type: boolean
+                        example: true
+                      trainingStatus:
+                        type: string
+                        example: trained
+                      isTraining:
+                        type: boolean
+                        example: false
+                      modelLoaded:
+                        type: boolean
+                        example: true
+                      selectedModel:
+                        type: string
+                        example: MultinomialNaiveBayes
+                      artifactAvailable:
+                        type: boolean
+                        example: true
+
+  /api/model/train:
+    post:
+      summary: Start model training experiment pipeline
+      description: Trains candidate classifiers using 70/15/15 stratified split, TF-IDF, and Chi-Square selection.
+      operationId: trainModels
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filePath:
+                  type: string
+                  example: data/raw/train.csv
+                records:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '200':
+          description: Training successfully completed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                  data:
+                    type: object
+        '409':
+          description: Training already in progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Dataset file not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/model/comparison:
+    get:
+      summary: Model comparison results
+      description: Returns validation metrics, baseline metrics, model names, and selected best model.
+      operationId: getModelComparison
+      responses:
+        '200':
+          description: Model comparison table.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      models:
+                        type: array
+                        items:
+                          type: object
+                      selectedModel:
+                        type: string
+                        example: MultinomialNaiveBayes
+
+  /api/model/predict:
+    post:
+      summary: Predict disaster classification for input tweet
+      description: Preprocesses input tweet and classifies using the active loaded model.
+      operationId: predictModelText
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictionRequest'
+      responses:
+        '200':
+          description: Classification outcome and probabilities.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResponse'
+        '422':
+          description: Validation error on input text.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '503':
+          description: Model not loaded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/features/extract:
+    post:
+      summary: Real-time BoW and TF-IDF feature extraction
+      description: Fits CountVectorizer and TfidfVectorizer on reference corpus and transforms input text.
+      operationId: extractFeatures
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  example: "Forest fire near evacuation center"
+                corpus:
+                  type: array
+                  items:
+                    type: string
+                ngramRange:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 1]
+                sublinearTf:
+                  type: boolean
+                  example: false
+      responses:
+        '200':
+          description: Feature extraction details including vocabulary, BoW counts, and TF-IDF weights.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+        '422':
+          description: Validation error on input text.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+  /api/features/dataset-info:
+    get:
+      summary: Dataset-trained feature extraction status
+      description: Returns vocabulary and selected Chi-Square features if a model has been trained.
+      operationId: getDatasetFeaturesInfo
+      responses:
+        '200':
+          description: Dataset feature status and summary.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+
+  /api/features/educational-demo:
+    get:
+      summary: Educational feature extraction and Chi-Square demo
+      description: Returns step-by-step BoW, TF-IDF, and 2x2 Chi-Square contingency table metrics on a toy dataset.
+      operationId: getEducationalDemo
+      responses:
+        '200':
+          description: Educational demonstration data with contingency tables.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - app_name
+        - version
+      properties:
+        status:
+          type: string
+          example: ok
+        app_name:
+          type: string
+          example: Syllabus NLP Disaster Tweets API
+        version:
+          type: string
+          example: 1.0.0
+
+    DatasetSummaryResponse:
+      type: object
+      required:
+        - status
+        - filename
+        - total_records
+        - valid_records
+        - invalid_records
+        - duplicate_records
+        - columns
+        - class_distribution
+        - class_percentages
+        - missing_values
+      properties:
+        status:
+          type: string
+          example: available
+        filename:
+          type: string
+          example: train.csv
+        total_records:
+          type: integer
+          example: 7613
+        valid_records:
+          type: integer
+          example: 7613
+        invalid_records:
+          type: integer
+          example: 0
+        duplicate_records:
+          type: integer
+          example: 110
+        columns:
+          type: array
+          items:
+            type: string
+          example: ["id", "keyword", "location", "text", "target"]
+        missing_values:
+          type: object
+          additionalProperties:
+            type: integer
+          example:
+            id: 0
+            keyword: 61
+            location: 2533
+            text: 0
+            target: 0
+        class_distribution:
+          type: object
+          required:
+            - disaster
+            - non_disaster
+          properties:
+            disaster:
+              type: integer
+              example: 3271
+            non_disaster:
+              type: integer
+              example: 4342
+        class_percentages:
+          type: object
+          required:
+            - disaster
+            - non_disaster
+          properties:
+            disaster:
+              type: number
+              format: float
+              example: 42.97
+            non_disaster:
+              type: number
+              format: float
+              example: 57.03
+        sample_records:
+          type: array
+          items:
+            type: object
+
+    PreprocessRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          example: "BREAKING! Flood rescue needed NOW! https://example.com #FloodRescue @user"
+        options:
+          type: object
+          properties:
+            lowercase:
+              type: boolean
+              default: true
+            removeUrls:
+              type: boolean
+              default: true
+            removeHtml:
+              type: boolean
+              default: true
+            handleMentions:
+              type: boolean
+              default: true
+            handleHashtags:
+              type: boolean
+              default: true
+            removeStopWords:
+              type: boolean
+              default: true
+            preserveNegation:
+              type: boolean
+              default: true
+            stemming:
+              type: boolean
+              default: true
+
+    PreprocessResponse:
+      type: object
+      required:
+        - original_text
+        - cleaned_text
+        - tokens
+        - filtered_tokens
+        - stemmed_tokens
+        - final_text
+        - options
+      properties:
+        original_text:
+          type: string
+        cleaned_text:
+          type: string
+        tokens:
+          type: array
+          items:
+            type: string
+        filtered_tokens:
+          type: array
+          items:
+            type: string
+        stemmed_tokens:
+          type: array
+          items:
+            type: string
+        final_text:
+          type: string
+        options:
+          type: object
+
+    PreprocessingRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: "Our deeds are the reason of this #earthquake May ALLAH Forgive us all"
+        apply_lowercasing:
+          type: boolean
+          default: true
+        remove_urls:
+          type: boolean
+          default: true
+        remove_stopwords:
+          type: boolean
+          default: true
+        preserve_negation:
+          type: boolean
+          default: true
+        stemmer:
+          type: string
+          enum: ["porter", "snowball", "none"]
+          default: porter
+        lemmatizer:
+          type: string
+          enum: ["wordnet", "none"]
+          default: wordnet
+
+    PosTagItem:
+      type: object
+      required:
+        - token
+        - tag
+        - description
+      properties:
+        token:
+          type: string
+          example: earthquake
+        tag:
+          type: string
+          example: NN
+        description:
+          type: string
+          example: Noun, singular
+
+    PreprocessingResponse:
+      type: object
+      required:
+        - original_text
+        - cleaned_text
+        - tokens
+        - filtered_tokens
+        - stemmed_tokens
+        - lemmatized_tokens
+        - pos_tags
+        - statistics
+      properties:
+        original_text:
+          type: string
+        cleaned_text:
+          type: string
+        tokens:
+          type: array
+          items:
+            type: string
+        filtered_tokens:
+          type: array
+          items:
+            type: string
+        stemmed_tokens:
+          type: array
+          items:
+            type: string
+        lemmatized_tokens:
+          type: array
+          items:
+            type: string
+        pos_tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PosTagItem'
+        statistics:
+          type: object
+          required:
+            - character_count
+            - token_count
+            - lexical_diversity
+          properties:
+            character_count:
+              type: integer
+            token_count:
+              type: integer
+            lexical_diversity:
+              type: number
+              format: float
+
+    ModelMetadata:
+      type: object
+      required:
+        - id
+        - name
+        - model_type
+        - feature_representation
+        - is_trained
+        - description
+      properties:
+        id:
+          type: string
+          example: logistic_regression
+        name:
+          type: string
+          example: Logistic Regression (MaxEnt)
+        model_type:
+          type: string
+          example: Linear Classifier
+        feature_representation:
+          type: string
+          example: TF-IDF (1-gram + 2-gram)
+        is_trained:
+          type: boolean
+          example: true
+        description:
+          type: string
+        hyperparameters:
+          type: object
+
+    ModelListResponse:
+      type: object
+      required:
+        - models
+        - selected_default_model
+      properties:
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelMetadata'
+        selected_default_model:
+          type: string
+          example: logistic_regression
+
+    ModelMetrics:
+      type: object
+      required:
+        - model_id
+        - model_name
+        - accuracy
+        - precision_macro
+        - recall_macro
+        - f1_macro
+        - f1_weighted
+        - confusion_matrix
+      properties:
+        model_id:
+          type: string
+        model_name:
+          type: string
+        accuracy:
+          type: number
+          format: float
+        precision_macro:
+          type: number
+          format: float
+        recall_macro:
+          type: number
+          format: float
+        f1_macro:
+          type: number
+          format: float
+        f1_weighted:
+          type: number
+          format: float
+        confusion_matrix:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+          example: [[580, 71], [115, 376]]
+        classification_report:
+          type: object
+
+    MetricsResponse:
+      type: object
+      required:
+        - evaluation_timestamp
+        - test_split_size
+        - benchmark_results
+      properties:
+        evaluation_timestamp:
+          type: string
+        test_split_size:
+          type: integer
+        benchmark_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelMetrics'
+
+    PredictionRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: "Huge wildfire reported near residential area, evacuations underway!"
+        model_id:
+          type: string
+          default: logistic_regression
+
+    PredictionResponse:
+      type: object
+      required:
+        - input_text
+        - model_id
+        - predicted_label
+        - predicted_class
+        - confidence
+      properties:
+        input_text:
+          type: string
+        model_id:
+          type: string
+        predicted_label:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        predicted_class:
+          type: string
+          enum: ["Not Disaster", "Disaster"]
+          example: Disaster
+        confidence:
+          type: number
+          format: float
+          example: 0.8924
+        class_probabilities:
+          type: object
+          properties:
+            not_disaster:
+              type: number
+              format: float
+            disaster:
+              type: number
+              format: float
+        extracted_features:
+          type: array
+          items:
+            type: string
+          example: ["wildfire", "evacuations", "residential"]
+
+    ErrorResponse:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+
+    ValidationErrorResponse:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+

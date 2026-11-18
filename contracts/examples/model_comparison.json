@@ -1,0 +1,50 @@
+{
+  "status": "success",
+  "data": {
+    "models": [
+      {
+        "modelName": "DummyClassifier (Baseline)",
+        "isBaseline": true,
+        "accuracy": 0.5703,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "confusionMatrix": [
+          [651, 0],
+          [491, 0]
+        ]
+      },
+      {
+        "modelName": "MultinomialNaiveBayes",
+        "isBaseline": false,
+        "accuracy": 0.7986,
+        "precision": 0.8124,
+        "recall": 0.6925,
+        "f1": 0.7476,
+        "confusionMatrix": [
+          [572, 79],
+          [151, 340]
+        ]
+      },
+      {
+        "modelName": "LogisticRegression",
+        "isBaseline": false,
+        "accuracy": 0.7855,
+        "precision": 0.7712,
+        "recall": 0.7189,
+        "f1": 0.7441,
+        "confusionMatrix": [
+          [544, 107],
+          [138, 353]
+        ]
+      }
+    ],
+    "selectedModel": "MultinomialNaiveBayes",
+    "bestMetadata": {
+      "modelName": "MultinomialNaiveBayes",
+      "validationF1": 0.7476,
+      "validationAccuracy": 0.7986
+    }
+  }
+}
+

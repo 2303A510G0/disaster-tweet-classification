@@ -1,0 +1,10 @@
+node_modules
+.git
+.gitignore
+.env
+.pytest_cache
+frontend/node_modules
+frontend/dist
+backend/node_modules
+backend/tests
+coverage
